@@ -419,14 +419,14 @@
                     </div>
                 </div>
 
-                <!-- Câu 2 (Chọn nhiều) -->
+                <!-- Câu 2 (Đã sửa thành chọn 1 đáp án B) -->
                 <div class="question-box">
-                    <p>2. Chi tiết nào cho thấy Thuỵ quan sát và nhận xét rất đúng về quá trình nảy mầm của hạt đậu đen và hạt muồng hoàng yến? <span style="color:#666; font-size:0.9em;">(Chọn tất cả ý đúng)</span></p>
+                    <p>2. Chi tiết nào cho thấy Thuỵ quan sát và nhận xét rất đúng về quá trình nảy mầm của hạt đậu đen và hạt muồng hoàng yến? <span style="color:#666; font-size:0.9em;">(Chọn 1 đáp án đúng nhất)</span></p>
                     <div class="options">
-                        <label><input type="checkbox" name="q2" value="A"> A. Thuỵ luôn ghi lại kết quả quan sát quá trình nảy mầm của hạt muồng hoàng yến.</label>
-                        <label><input type="checkbox" name="q2" value="B"> B. Thuỵ phát hiện ra hạt muồng hoàng yến chậm nảy mầm hơn hạt đậu đen.</label>
-                        <label><input type="checkbox" name="q2" value="C"> C. Thuỵ nói cho ông biết là cần ngâm hạt muồng hoàng yến vào nước trước khi gieo.</label>
-                        <label><input type="checkbox" name="q2" value="D"> D. Thuỵ nói cho ông biết là mầm cây muồng hoàng yến khoẻ hơn mầm cây đậu đen.</label>
+                        <label><input type="radio" name="q2" value="A"> A. Thuỵ luôn ghi lại kết quả quan sát quá trình nảy mầm của hạt muồng hoàng yến.</label>
+                        <label><input type="radio" name="q2" value="B"> B. Thuỵ phát hiện ra hạt muồng hoàng yến chậm nảy mầm hơn hạt đậu đen.</label>
+                        <label><input type="radio" name="q2" value="C"> C. Thuỵ nói cho ông biết là cần ngâm hạt muồng hoàng yến vào nước trước khi gieo.</label>
+                        <label><input type="radio" name="q2" value="D"> D. Thuỵ nói cho ông biết là mầm cây muồng hoàng yến khoẻ hơn mầm cây đậu đen.</label>
                     </div>
                 </div>
 
@@ -452,9 +452,9 @@
                     </div>
                 </div>
 
-                <!-- Câu 5 (Chọn nhiều) -->
+                <!-- Câu 5 (Chọn nhiều / Tự reflect - chọn ý nào cũng có điểm) -->
                 <div class="question-box">
-                    <p>5. Theo em, Thuỵ, Loan và các bạn đã học được những gì từ tiết thực hành? <span style="color:#666; font-size:0.9em;">(Chọn tất cả ý đúng)</span></p>
+                    <p>5. Theo em, Thuỵ, Loan và các bạn đã học được những gì từ tiết thực hành? <span style="color:#666; font-size:0.9em;">(Chọn ý em tâm đắc nhất)</span></p>
                     <div class="options">
                         <label><input type="checkbox" name="q5" value="A"> A. Các bạn biết thêm một số kinh nghiệm ươm mầm cây từ hạt.</label>
                         <label><input type="checkbox" name="q5" value="B"> B. Các bạn biết thêm nhiều điều thú vị về sự nảy mầm của hạt cây.</label>
@@ -470,7 +470,7 @@
             <!-- PHẦN BÀI TẬP LÀM THÊM (KỂ CHUYỆN) NẰM Ở CỘT PHẢI -->
             <div class="homework-section">
                 <h2 style="color: #d81b60; border-bottom: 2px solid #f8bbd0; margin-top: 0; font-size: 1.2em;">🌸 BÀI TẬP LÀM THÊM (NHẬN 2 HOA 🌸)</h2>
-                <p style="font-size: 0.95em; text-align: left;"><strong>🎤 THỬ TÀI KỂ CHUYỆN:</strong> Dựa vào 4 bức tranh minh họa dưới đây, em hãy kể lại câu chuyện “Hạt nảy mầm” bằng lời của mình và tải tệp ghi âm lên nhé!</p>
+                <p style="font-size: 0.95em; text-align: left;"><strong>🎤 THỬ TÀI KỂ CHUYỆN:</strong> Dựa vào 4 bức tranh minh họa dưới đây[cite: 1, 2], em hãy kể lại câu chuyện “Hạt nảy mầm” bằng lời của mình và tải tệp ghi âm lên nhé!</p>
                 
                 <!-- 4 bức tranh minh họa -->
                 <div class="gallery-grid">
@@ -504,7 +504,7 @@
                     <p id="recordStatus" style="margin-top: 8px; font-style: italic; color: #555; font-size: 0.9em;"></p>
                     <audio id="audioPlayback" controls></audio>
                     
-                    <!-- Nút nộp bài làm thêm mới thêm vào -->
+                    <!-- Nút nộp bài làm thêm -->
                     <button id="homeworkSubmitBtn" class="homework-submit-btn" onclick="submitHomework()">NỘP BÀI KỂ CHUYỆN</button>
                     <div id="homeworkResult" class="result-panel"></div>
                 </div>
@@ -538,12 +538,12 @@
 
         function submitQuiz() {
             const q1 = document.querySelector('input[name="q1"]:checked');
-            const q2 = document.querySelectorAll('input[name="q2"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
             const q3 = document.querySelector('input[name="q3"]:checked');
             const q4 = document.querySelector('input[name="q4"]:checked');
             const q5 = document.querySelectorAll('input[name="q5"]:checked');
 
-            if (!q1 || q2.length === 0 || !q3 || !q4 || q5.length === 0) {
+            if (!q1 || !q2 || !q3 || !q4 || q5.length === 0) {
                 alert("⚠️ Vui lòng hoàn thành tất cả các câu hỏi trước khi nộp bài!");
                 return;
             }
@@ -552,16 +552,12 @@
             let correctCount = 0;
 
             if (q1.value === "B") { score += 2; correctCount++; }
-
-            let q2Values = Array.from(q2).map(el => el.value).sort().join(',');
-            if (q2Values === "B,C") { score += 2; correctCount++; }
-
+            if (q2.value === "B") { score += 2; correctCount++; }
             if (q3.value === "C") { score += 2; correctCount++; }
-
             if (q4.value === "C") { score += 2; correctCount++; }
-
-            let q5Values = Array.from(q5).map(el => el.value).sort().join(',');
-            if (q5Values === "A,B,D") { score += 2; correctCount++; }
+            
+            // Câu 5: Học sinh chọn bất kỳ ý nào cũng được tính điểm (tự reflect)
+            if (q5.length > 0) { score += 2; correctCount++; }
 
             let incorrectCount = 5 - correctCount;
 
