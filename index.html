@@ -424,4 +424,170 @@
 
                 <!-- Câu 4 -->
                 <div class="question-box">
-                    <p>4. Theo lời giải thích của cô giáo, người ta thường làm gì để “đánh thức” những loại hạt có vỏ cứng hoặc ngủ lâu như hạt xoan, hạt gấc? <span style="color:#666; font-size:0.
+                    <p>4. Theo lời giải thích của cô giáo, người ta thường làm gì để “đánh thức” những loại hạt có vỏ cứng hoặc ngủ lâu như hạt xoan, hạt gấc? <span style="color:#666; font-size:0.9em;">(Chọn 1 đáp án đúng nhất)</span></p>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="A"> A. Chỉ cần tưới thật nhiều nước mỗi ngày là được.</label>
+                        <label><input type="radio" name="q4" value="B"> B. Đem hạt đi nấu chín cùng với xôi để hạt nhanh mềm.</label>
+                        <label><input type="radio" name="q4" value="C"> C. Ngâm hạt vào nước nóng hoặc đốt vài phút trước khi gieo.</label>
+                        <label><input type="radio" name="q4" value="D"> D. Cất hạt vào chỗ tối để hạt ngủ thêm một thời gian dài nữa.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 5 (Chọn nhiều) -->
+                <div class="question-box">
+                    <p>5. Theo em, Thuỵ, Loan và các bạn đã học được những gì từ tiết thực hành? <span style="color:#666; font-size:0.9em;">(Chọn tất cả ý đúng)</span></p>
+                    <div class="options">
+                        <label><input type="checkbox" name="q5" value="A"> A. Các bạn biết thêm một số kinh nghiệm ươm mầm cây từ hạt.</label>
+                        <label><input type="checkbox" name="q5" value="B"> B. Các bạn biết thêm nhiều điều thú vị về sự nảy mầm của hạt cây.</label>
+                        <label><input type="checkbox" name="q5" value="C"> C. Các bạn ý thức được: Muốn hiểu sâu sắc bài học thì phải thực hành.</label>
+                        <label><input type="checkbox" name="q5" value="D"> D. Các bạn hiểu mỗi loại hạt có đặc điểm riêng, cần có cách gieo trồng phù hợp.</label>
+                    </div>
+                </div>
+
+                <button class="submit-btn" onclick="submitQuiz()">NỘP BÀI CHÍNH THỨC</button>
+                <div id="quizResult" class="result-panel"></div>
+            </div>
+
+            <!-- PHẦN BÀI TẬP LÀM THÊM (KỂ CHUYỆN) NẰM Ở CỘT PHẢI -->
+            <div class="homework-section">
+                <h2 style="color: #d81b60; border-bottom: 2px solid #f8bbd0; margin-top: 0; font-size: 1.2em;">🌸 BÀI TẬP LÀM THÊM (NHẬN 2 HOA 🌸)</h2>
+                <p style="font-size: 0.95em; text-align: left;"><strong>🎤 THỬ TÀI KỂ CHUYỆN:</strong> Dựa vào 4 bức tranh minh họa dưới đây, em hãy kể lại câu chuyện “Hạt nảy mầm” bằng lời của mình và tải tệp ghi âm lên nhé!</p>
+                
+                <!-- 4 bức tranh minh họa -->
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="1.jpg" alt="Tranh 1" onclick="openModal(this)">
+                        <span>Tranh 1: Mầm hạt muồng</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="2.jpg" alt="Tranh 2" onclick="openModal(this)">
+                        <span>Tranh 2: Ông nội và Thụy</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="3.jpg" alt="Tranh 3" onclick="openModal(this)">
+                        <span>Tranh 3: Tiết thực hành</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="4.jpg" alt="Tranh 4" onclick="openModal(this)">
+                        <span>Tranh 4: Trồng cây vườn trường</span>
+                    </div>
+                </div>
+
+                <!-- Chỉ giữ lại phần chọn tệp tải lên -->
+                <div class="storytelling-controls">
+                    <p style="margin-top:0; font-weight: bold; color: #d81b60; font-size: 0.9em;">📁 TẢI LÊN TỆP ÂM THANH (MP3, WAV, M4A)</p>
+                    
+                    <div class="upload-container">
+                        <label for="fileInput" class="upload-label">📂 Chọn tệp ghi âm</label>
+                        <input type="file" id="fileInput" accept="audio/*" onchange="handleFileUpload(event)">
+                    </div>
+
+                    <p id="recordStatus" style="margin-top: 8px; font-style: italic; color: #555; font-size: 0.9em;"></p>
+                    <audio id="audioPlayback" controls style="display:none;"></audio>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal phóng to ảnh -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <img id="modalImg">
+    </div>
+
+    <!-- SCRIPT XỬ LÝ CHẤM ĐIỂM VÀ TẢI FILE -->
+    <script>
+        let isSubmitted = false;
+
+        function submitQuiz() {
+            if (isSubmitted) {
+                alert("Bạn đã nộp bài này rồi, không thể tính điểm dồn nhiều lần!");
+                return;
+            }
+
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelectorAll('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const q4 = document.querySelector('input[name="q4"]:checked');
+            const q5 = document.querySelectorAll('input[name="q5"]:checked');
+
+            if (!q1 || q2.length === 0 || !q3 || !q4 || q5.length === 0) {
+                alert("⚠️ Vui lòng hoàn thành tất cả các câu hỏi trước khi nộp bài!");
+                return;
+            }
+
+            let score = 0;
+            let correctCount = 0;
+
+            if (q1.value === "B") { score += 2; correctCount++; }
+
+            let q2Values = Array.from(q2).map(el => el.value).sort().join(',');
+            if (q2Values === "B,C") { score += 2; correctCount++; }
+
+            if (q3.value === "C") { score += 2; correctCount++; }
+
+            if (q4.value === "C") { score += 2; correctCount++; }
+
+            let q5Values = Array.from(q5).map(el => el.value).sort().join(',');
+            if (q5Values === "A,B,D") { score += 2; correctCount++; }
+
+            let incorrectCount = 5 - correctCount;
+
+            isSubmitted = true;
+            
+            document.getElementById("scoreDisplay").innerText = score;
+            document.getElementById("flowerDisplay").innerText = score >= 8 ? "2" : "0";
+            let statusEl = document.getElementById("statusDisplay");
+            statusEl.innerText = "Đã hoàn thành";
+            statusEl.style.color = "#2e7d32";
+
+            const resultPanel = document.getElementById("quizResult");
+            resultPanel.style.display = "block";
+            
+            if (score === 10) {
+                resultPanel.style.backgroundColor = "#e8f5e9";
+                resultPanel.style.color = "#2e7d32";
+                resultPanel.innerHTML = `🎉 TUYỆT VỜI! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Bạn nhận được 2 bông hoa 🌸 hoàn thành xuất sắc bài học!`;
+            } else if (score >= 6) {
+                resultPanel.style.backgroundColor = "#fff9c4";
+                resultPanel.style.color = "#f57f17";
+                resultPanel.innerHTML = `👍 KHÁ LẮM! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Hãy xem lại các câu chưa chính xác nhé!`;
+            } else {
+                resultPanel.style.backgroundColor = "#ffebee";
+                resultPanel.style.color = "#c62828";
+                resultPanel.innerHTML = `💪 CỐ GẮNG LÊN! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Hãy đọc lại bài đọc kỹ hơn nhé!`;
+            }
+
+            resultPanel.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Xử lý nộp file từ máy
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            const recordStatus = document.getElementById("recordStatus");
+            const audioPlayback = document.getElementById("audioPlayback");
+
+            if (file) {
+                const fileUrl = URL.createObjectURL(file);
+                audioPlayback.src = fileUrl;
+                audioPlayback.style.display = "inline-block";
+                recordStatus.style.color = "#2e7d32";
+                recordStatus.innerText = `Đã tải tệp: "${file.name}" (+2 🌸)`;
+            }
+        }
+
+        // Xử lý phóng to ảnh
+        function openModal(img) {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImg");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
