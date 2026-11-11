@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài đọc: Hạt nảy mầm</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f7f4;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #27ae60;
+            margin-bottom: 5px;
+        }
+        /* Bố cục chia 2 cột */
+        .main-container {
+            display: flex;
+            gap: 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .column {
+            flex: 1;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        /* Khung nghe audio mẫu đặt ở phía trên câu chuyện */
+        .audio-player-box {
+            background: #eafaf1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px dashed #27ae60;
+        }
+        .audio-player-box p {
+            margin: 0 0 8px 0;
+            font-weight: 600;
+            color: #27ae60;
+        }
+        .audio-player-box audio {
+            width: 100%;
+            max-width: 350px;
+        }
+        /* Nội dung bài đọc */
+        .story-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .story-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        /* Phần câu hỏi */
+        .question-box {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9fbfb;
+            border-left: 4px solid #27ae60;
+            border-radius: 4px;
+        }
+        .question-box p {
+            font-weight: 600;
+            margin-top: 0;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .options label:hover {
+            background: #eafaf1;
+        }
+        .submit-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .submit-btn:hover {
+            background-color: #219653;
+        }
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Phần tự kể chuyện ở dưới */
+        .storytelling-section {
+            max-width: 1300px;
+            margin: 20px auto 0 auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .record-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+            margin: 5px;
+        }
+        .record-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Giao diện nút nộp file tùy chỉnh */
+        .upload-container {
+            display: inline-block;
+            margin: 5px;
+        }
+        .upload-label {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        .upload-label:hover {
+            background-color: #2980b9;
+        }
+        #fileInput {
+            display: none;
+        }
+
+        #audioPlayback {
+            margin-top: 15px;
+            width: 100%;
+            max-width: 400px;
+            display: inline-block;
+        }
+
+        /* Thích ứng trên điện thoại */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .column {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Hạt nảy mầm</h1>
+    <p>Đọc truyện, nghe audio mẫu, làm bài tập và thử tài kể chuyện sáng tạo</p>
+</header>
+
+<div class="main-container">
+    <!-- CỘT TRÁI: AUDIO MẪU (Ở TRÊN CÙNG), BÀI ĐỌC VÀ HÌNH ẢNH -->
+    <div class="column">
+        <h2>📖 Nội dung bài đọc</h2>
+        
+        <!-- Khung nghe audio đọc mẫu đặt ở trên cùng câu chuyện -->
+        <div class="audio-player-box">
+            <p>🎧 Nghe audio đọc mẫu bài đọc</p>
+            <audio controls>
+                <source src="hat-nay-mam.mp3" type="audio/mp3">
+                Trình duyệt của bạn không hỗ trợ phát tệp âm thanh này.
+            </audio>
+        </div>
+
+        <div class="story-content">
+            <p>Một hạt muồng Hoàng Yến bé nhỏ đã ngủ quên từ lâu lắm trong vỏ cứng. Rồi một ngày, nó trương nở, vỏ mềm dần. <strong>Bum!</strong> Hạt đã nảy mầm. Nó cắm rễ xuống nền đất ẩm mềm, vươn dậy trong chiếc lọ thủy tinh. Quanh nó là ba lọ mầm đậu đen đã cao, lá xanh nõn[cite: 5].</p>
+            
+            <img src="1.jpg" alt="Các chậu cây nảy mầm">[cite: 1]
+
+            <p>"Nó chậm nảy mầm hơn hạt đậu đen hả ông?" – Thủy thắc mắc[cite: 5].</p>
+            <p>Ông nội nói giọng trầm trầm[cite: 5]:</p>
+            <p>"Thế nên mới cần ngâm nó vào nước trước khi gieo. Những loài cây ngủ muộn thường khoẻ, có vòng đời dài và cao lớn hơn loài cây mọc nhanh". Vừa nói, ông nội vừa cẩn thận xếp những lọ cây vào giỏ[cite: 5].</p>
+            
+            <img src="2.jpg" alt="Ông nội và Thủy xếp lọ cây">[cite: 2]
+
+            <p>Thủy mang giỏ cây đến lớp. Giờ thực hành, cô giáo bảo học sinh đặt lọ cây lên bàn, cô sẽ kiểm tra[cite: 5].</p>
+            <p>Đến bàn của Loan, cô cầm lọ lên xem. Trong lọ chẳng có cái mầm nào[cite: 5].</p>
+            <p>"Ươm cây gì đây em?"[cite: 5]</p>
+            <p>"Dạ a, cây gấc ạ."[cite: 5]</p>
+            
+            <img src="3.jpg" alt="Cô giáo và các bạn trong lớp">[cite: 3]
+
+            <p>Cô giáo thận trọng gạt lớp đất phía trên. Cái hạt gấc rắn cóc màu đen sừng hiện ra. Nó còn chưa nứt nanh[cite: 5].</p>
+            <p>Loan giơ tay: "Hạt gấc này em lấy trong chõ xôi ạ!"[cite: 5]</p>
+            <p>Xung quanh rộ lên tiếng bàn tán. Một cái hạt nấu chín còn mọc mầm thì một con gà luộc vẫn có thể đẻ trứng! Nó chỉ chưa nảy mầm thôi – Loan cãi[cite: 5].</p>
+            <p>Cô giáo ra hiệu cho cả lớp im lặng, từ tốn nói: "Mỗi cái hạt là một cơ thể sống thực thụ, nó chỉ đang ngủ thôi. Để đánh thức và kích thích các hạt có vỏ cứng nảy mầm, người ta thường ngâm chúng vào nước nóng. Thay vì ngâm, hạt gấc này được đồ trong chõ xôi. Với loại hạt ngủ lâu như hạt xoan, người ta còn đốt vài phút trước khi gieo cho chóng nảy mầm."[cite: 5]</p>
+            <p>"Bây giờ, các em theo cô, mang những cây này ra vườn trồng." Đám học sinh hí hửng mang cây của mình đi theo cô giáo. <em>(Theo Trung Sĩ)</em>[cite: 5]</p>
+
+            <img src="4.jpg" alt="Trồng cây ngoài vườn trường">[cite: 4]
+        </div>
+    </div>
+
+    <!-- CỘT PHẢI: BÀI TẬP CHÍNH THỨC -->
+    <div class="column">
+        <h2>📝 Bài tập chính thức</h2>
+        
+        <!-- Câu 1 (Chọn 1 đáp án) -->
+        <div class="question-box">
+            <p>1. Thủy và các bạn ươm mầm để làm gì?</p>
+            <div class="options" id="q1">
+                <label><input type="radio" name="ans1" value="a"> A. Để cho vui sau buổi học vất vả ở trường.</label>
+                <label><input type="radio" name="ans1" value="b"> B. Để quan sát quá trình nảy mầm của hạt cây.</label>
+                <label><input type="radio" name="ans1" value="c"> C. Để có cây non trồng trong vườn của gia đình.</label>
+                <label><input type="radio" name="ans1" value="d"> D. Để mang mầm cây đến lớp cho cô giáo chấm điểm.</label>
+            </div>
+            <button class="submit-btn" onclick="checkSingle(1, 'd')">Kiểm tra</button>
+            <div id="result1" class="result"></div>
+        </div>
+
+        <!-- Câu 2 (Chọn NHIỀU đáp án - Checkbox) -->
+        <div class="question-box">
+            <p>2. Chi tiết nào cho thấy Thủy quan sát và nhận xét rất đúng về quá trình nảy mầm của hạt đậu đen và hạt muồng hoàng yến? <em>(Chọn các ý đúng)</em></p>
+            <div class="options" id="q2">
+                <label><input type="checkbox" name="ans2" value="1"> ⬜ Thủy luôn ghi lại kết quả quan sát quá trình nảy mầm của hạt muồng hoàng yến.</label>
+                <label><input type="checkbox" name="ans2" value="2"> ☑️ Thủy phát hiện ra hạt muồng hoàng yến chậm nảy mầm hơn hạt đậu đen.</label>
+                <label><input type="checkbox" name="ans2" value="3"> ☑️ Thủy nói cho ông biết là cần ngâm hạt muồng hoàng yến vào nước trước khi gieo.</label>
+                <label><input type="checkbox" name="ans2" value="4"> ⬜ Thủy nói cho ông biết là mầm cây muồng hoàng yến khoẻ hơn mầm cây đậu đen.</label>
+            </div>
+            <button class="submit-btn" onclick="checkMultiple(2, ['2', '3'])">Kiểm tra</button>
+            <div id="result2" class="result"></div>
+        </div>
+
+        <!-- Câu 3 (Chọn 1 đáp án) -->
+        <div class="question-box">
+            <p>3. Khi thấy hạt gấc của Loan chưa nảy mầm, các bạn trong lớp đã có thái độ như thế nào?</p>
+            <div class="options" id="q3">
+                <label><input type="radio" name="ans3" value="a"> A. Các bạn im lặng chờ đợi lời giải thích của cô giáo.</label>
+                <label><input type="radio" name="ans3" value="b"> B. Các bạn cổ vũ Loan, tin rằng hạt gấc sẽ sớm nảy mầm.</label>
+                <label><input type="radio" name="ans3" value="c"> C. Các bạn cho rằng hạt đã nấu chín thì không thể mọc mầm (rộ lên tiếng bàn tán).</label>
+                <label><input type="radio" name="ans3" value="d"> D. Các bạn giúp Loan đào lớp đất lên để kiểm tra hạt gấc.</label>
+            </div>
+            <button class="submit-btn" onclick="checkSingle(3, 'c')">Kiểm tra</button>
+            <div id="result3" class="result"></div>
+        </div>
+
+        <!-- Câu 4 (Chọn 1 đáp án) -->
+        <div class="question-box">
+            <p>4. Theo lời giải thích của cô giáo, người ta thường làm gì để “đánh thức” những loại hạt có vỏ cứng hoặc ngủ lâu?</p>
+            <div class="options" id="q4">
+                <label><input type="radio" name="ans4" value="a"> A. Chỉ cần tưới thật nhiều nước mỗi ngày là được.</label>
+                <label><input type="radio" name="ans4" value="b"> B. Đem hạt đi nấu chín cùng với xôi để hạt nhanh mềm.</label>
+                <label><input type="radio" name="ans4" value="c"> C. Ngâm hạt vào nước nóng hoặc đốt vài phút trước khi gieo.</label>
+                <label><input type="radio" name="ans4" value="d"> D. Cất hạt vào chỗ tối để hạt ngủ thêm một thời gian dài nữa.</label>
+            </div>
+            <button class="submit-btn" onclick="checkSingle(4, 'c')">Kiểm tra</button>
+            <div id="result4" class="result"></div>
+        </div>
+
+        <!-- Câu 5 (Chọn NHIỀU đáp án - Checkbox) -->
+        <div class="question-box">
+            <p>5. Theo em, Thủy, Loan và các bạn đã học được những gì từ tiết thực hành? <em>(Chọn các ý đúng)</em></p>
+            <div class="options" id="q5">
+                <label><input type="checkbox" name="ans5" value="1"> ☑️ Các bạn biết thêm một số kinh nghiệm ươm mầm cây từ hạt.</label>
+                <label><input type="checkbox" name="ans5" value="2"> ☑️ Các bạn biết thêm nhiều điều thú vị về sự nảy mầm của hạt cây.</label>
+                <label><input type="checkbox" name="ans5" value="3"> ⬜ Các bạn ý thức được: Muốn hiểu sâu sắc bài học thì phải thực hành.</label>
+                <label><input type="checkbox" name="ans5" value="4"> ☑️ Các bạn hiểu mỗi loại hạt có đặc điểm riêng, cần có cách gieo trồng phù hợp.</label>
+            </div>
+            <button class="submit-btn" onclick="checkMultiple(5, ['1', '2', '4'])">Kiểm tra</button>
+            <div id="result5" class="result"></div>
+        </div>
+    </div>
+</div>
+
+<!-- PHẦN DƯỚI: THỬ TÀI KỂ CHUYỆN & NỘP FILE -->
+<div class="storytelling-section">
+    <h2>🎤 Bài Tập Làm Thêm: Thử Tài Kể Chuyện (Nhận 2 Hoa 🌸)</h2>
+    <p>Dựa vào 4 bức tranh minh họa, em hãy kể lại câu chuyện “Hạt nảy mầm” bằng lời của mình. Em có thể ghi âm trực tiếp hoặc tải tệp ghi âm sẵn có lên đây:</p>
+    
+    <div>
+        <!-- Nút ghi âm trực tiếp -->
+        <button class="record-btn" id="recordBtn" onclick="toggleRecording()">🔴 Bắt đầu ghi âm</button>
+        
+        <!-- Nút chọn / nộp tệp có sẵn -->
+        <div class="upload-container">
+            <label for="fileInput" class="upload-label">📂 Chọn tệp nộp bài</label>
+            <input type="file" id="fileInput" accept="audio/*" onchange="handleFileUpload(event)">
+        </div>
+    </div>
+
+    <p id="recordStatus" style="margin-top: 10px; font-style: italic; color: #7f8c8d;"></p>
+    <br>
+    <audio id="audioPlayback" controls style="display:none;"></audio>
+</div>
+
+<script>
+    // Kiểm tra câu hỏi 1 lựa chọn (Radio)
+    function checkSingle(qNum, correctVal) {
+        const selected = document.querySelector(`input[name="ans${qNum}"]:checked`);
+        const resDiv = document.getElementById(`result${qNum}`);
+        
+        if (!selected) {
+            resDiv.style.color = "#e67e22";
+            resDiv.innerText = "Vui lòng chọn một đáp án nhé!";
+            return;
+        }
+
+        if (selected.value === correctVal) {
+            resDiv.style.color = "#27ae60";
+            resDiv.innerText = "Chính xác! Xuất sắc lắm 🎉";
+        } else {
+            resDiv.style.color = "#e74c3c";
+            resDiv.innerText = "Chưa chính xác, thử suy nghĩ lại xem sao nhé! 💡";
+        }
+    }
+
+    // Kiểm tra câu hỏi nhiều lựa chọn (Checkbox)
+    function checkMultiple(qNum, correctArray) {
+        const checkedBoxes = document.querySelectorAll(`input[name="ans${qNum}"]:checked`);
+        const resDiv = document.getElementById(`result${qNum}`);
+
+        if (checkedBoxes.length === 0) {
+            resDiv.style.color = "#e67e22";
+            resDiv.innerText = "Vui lòng chọn ít nhất một đáp án!";
+            return;
+        }
+
+        let userValues = Array.from(checkedBoxes).map(cb => cb.value);
+        
+        let isCorrect = userValues.length === correctArray.length && 
+                        userValues.every(val => correctArray.includes(val));
+
+        if (isCorrect) {
+            resDiv.style.color = "#27ae60";
+            resDiv.innerText = "Quá chính xác! Em đã chọn đầy đủ các ý đúng 🌟";
+        } else {
+            resDiv.style.color = "#e74c3c";
+            resDiv.innerText = "Chưa hoàn toàn chính xác hoặc thiếu/thừa ý. Em xem lại nhé! 💡";
+        }
+    }
+
+    // Tính năng ghi âm giọng nói trực tiếp
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
+
+    async function toggleRecording() {
+        const recordBtn = document.getElementById("recordBtn");
+        const recordStatus = document.getElementById("recordStatus");
+        const audioPlayback = document.getElementById("audioPlayback");
+
+        if (!isRecording) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    audioPlayback.src = audioUrl;
+                    audioPlayback.style.display = "inline-block";
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                recordBtn.innerText = "⏹️ Dừng ghi âm";
+                recordBtn.style.backgroundColor = "#c0392b";
+                recordStatus.innerText = "Đang ghi âm... Hãy tự tin kể câu chuyện dựa vào các bức tranh nhé!";
+            } catch (err) {
+                alert("Trình duyệt không thể truy cập Microphone. Hãy kiểm tra lại quyền nhé!");
+            }
+        } else {
+            mediaRecorder.stop();
+            isRecording = false;
+            recordBtn.innerText = "🔴 Ghi âm lại";
+            recordBtn.style.backgroundColor = "#27ae60";
+            recordStatus.innerText = "Đã ghi âm thành công và nhận được thêm 2 Hoa 🌸";
+        }
+    }
+
+    // Tính năng xử lý khi người dùng chọn tải tệp lên từ máy
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        const recordStatus = document.getElementById("recordStatus");
+        const audioPlayback = document.getElementById("audioPlayback");
+
+        if (file) {
+            const fileUrl = URL.createObjectURL(file);
+            audioPlayback.src = fileUrl;
+            audioPlayback.style.display = "inline-block";
+            recordStatus.style.color = "#27ae60";
+            recordStatus.innerText = `Đã tải lên tệp thành công: "${file.name}". Bạn nhận được thêm 2 Hoa 🌸`;
+        }
+    }
+</script>
+
+</body>
+</html>
