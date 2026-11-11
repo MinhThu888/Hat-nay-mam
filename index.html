@@ -370,7 +370,7 @@
                 <p>– Mỗi cái hạt là một cơ thể sống thực thụ, nó chỉ đang ngủ thôi. Để đánh thức và kích thích các hạt có vỏ cứng nảy mầm, người ta thường ngâm chúng vào nước nóng. Thay vì ngâm, hạt gấc này được đồ trong chõ xôi. Với loại hạt ngủ lâu như hạt xoan, người ta còn đốt vài phút trước khi gieo cho chóng nảy mầm... Bây giờ, các em theo cô, mang những cây này ra vườn trồng.</p>
                 <p>Đám học trò hí hửng mang cây của mình đi theo cô giáo.</p>
                 
-                <div class="story-author">Theo TRUNG SỸ</div>
+                <div class="story-author">Theo TRUNG SỸ[cite: 6]</div>
             </div>
 
             <!-- PHẦN CHÚ THÍCH -->
@@ -429,4 +429,98 @@
                         <label><input type="radio" name="q4" value="A"> A. Chỉ cần tưới thật nhiều nước mỗi ngày là được.</label>
                         <label><input type="radio" name="q4" value="B"> B. Đem hạt đi nấu chín cùng với xôi để hạt nhanh mềm.</label>
                         <label><input type="radio" name="q4" value="C"> C. Ngâm hạt vào nước nóng hoặc đốt vài phút trước khi gieo.</label>
-                        <label><input type="radio" name="q4" value="D"> D. Cất hạt vào chỗ tối để hạt ngủ thêm
+                        <label><input type="radio" name="q4" value="D"> D. Cất hạt vào chỗ tối để hạt ngủ thêm một thời gian dài nữa.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 5 (Chọn nhiều) -->
+                <div class="question-box">
+                    <p>5. Theo em, Thuỵ, Loan và các bạn đã học được những gì từ tiết thực hành? <span style="color:#666; font-size:0.9em;">(Chọn tất cả ý đúng)</span></p>
+                    <div class="options">
+                        <label><input type="checkbox" name="q5" value="A"> A. Các bạn biết thêm một số kinh nghiệm ươm mầm cây từ hạt.</label>
+                        <label><input type="checkbox" name="q5" value="B"> B. Các bạn biết thêm nhiều điều thú vị về sự nảy mầm của hạt cây.</label>
+                        <label><input type="checkbox" name="q5" value="C"> C. Các bạn ý thức được: Muốn hiểu sâu sắc bài học thì phải thực hành.</label>
+                        <label><input type="checkbox" name="q5" value="D"> D. Các bạn hiểu mỗi loại hạt có đặc điểm riêng, cần có cách gieo trồng phù hợp.</label>
+                    </div>
+                </div>
+
+                <button class="submit-btn" onclick="submitQuiz()">NỘP BÀI CHÍNH THỨC</button>
+                <div id="quizResult" class="result-panel"></div>
+            </div>
+
+            <!-- PHẦN BÀI TẬP LÀM THÊM (KỂ CHUYỆN) NẰM Ở CỘT PHẢI -->
+            <div class="homework-section">
+                <h2 style="color: #d81b60; border-bottom: 2px solid #f8bbd0; margin-top: 0; font-size: 1.2em;">🌸 BÀI TẬP LÀM THÊM (NHẬN 2 HOA 🌸)</h2>
+                <p style="font-size: 0.95em; text-align: left;"><strong>🎤 THỬ TÀI KỂ CHUYỆN:</strong> Dựa vào 4 bức tranh minh họa dưới đây, em hãy kể lại câu chuyện “Hạt nảy mầm” bằng lời của mình và nộp tệp ghi âm nhé!</p>
+                
+                <!-- 4 bức tranh minh họa -->
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="1.jpg" alt="Tranh 1" onclick="openModal(this)">[cite: 1]
+                        <span>Tranh 1: Mầm hạt muồng</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="2.jpg" alt="Tranh 2" onclick="openModal(this)">[cite: 2]
+                        <span>Tranh 2: Ông nội và Thụy</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="3.jpg" alt="Tranh 3" onclick="openModal(this)">[cite: 3]
+                        <span>Tranh 3: Tiết thực hành</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="4.jpg" alt="Tranh 4" onclick="openModal(this)">[cite: 4]
+                        <span>Tranh 4: Trồng cây vườn trường</span>
+                    </div>
+                </div>
+
+                <!-- Chỉ giữ lại phần nộp file -->
+                <div class="storytelling-controls">
+                    <p style="margin-top:0; font-weight: bold; color: #d81b60; font-size: 0.9em;">📁 NỘP TỆP ÂM THANH (MP3, WAV, M4A)</p>
+                    
+                    <div class="upload-container">
+                        <label for="fileInput" class="upload-label">📂 Chọn tệp ghi âm</label>
+                        <input type="file" id="fileInput" accept="audio/*" onchange="handleFileUpload(event)">
+                    </div>
+
+                    <p id="recordStatus" style="margin-top: 8px; font-style: italic; color: #555; font-size: 0.9em;"></p>
+                    <audio id="audioPlayback" controls style="display:none;"></audio>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal phóng to ảnh -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <img id="modalImg">
+    </div>
+
+    <!-- SCRIPT XỬ LÝ CHẤM ĐIỂM VÀ NỘP FILE -->
+    <script>
+        let isSubmitted = false;
+
+        function submitQuiz() {
+            if (isSubmitted) {
+                alert("Bạn đã nộp bài này rồi, không thể tính điểm dồn nhiều lần!");
+                return;
+            }
+
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelectorAll('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const q4 = document.querySelector('input[name="q4"]:checked');
+            const q5 = document.querySelectorAll('input[name="q5"]:checked');
+
+            if (!q1 || q2.length === 0 || !q3 || !q4 || q5.length === 0) {
+                alert("⚠️ Vui lòng hoàn thành tất cả các câu hỏi trước khi nộp bài!");
+                return;
+            }
+
+            let score = 0;
+            let correctCount = 0;
+
+            if (q1.value === "B") { score += 2; correctCount++; }
+
+            let q2Values = Array.from(q2).map(el => el.value).sort().join(',');
+            if (q2Values === "B,C") { score += 2; correct
