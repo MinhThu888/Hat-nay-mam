@@ -293,7 +293,26 @@
         #audioPlayback {
             margin-top: 10px;
             width: 100%;
-            display: inline-block;
+            display: none;
+        }
+
+        .homework-submit-btn {
+            background-color: #d81b60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background 0.2s;
+            display: none;
+            width: 100%;
+            margin-top: 15px;
+        }
+        .homework-submit-btn:hover {
+            background-color: #ad1457;
         }
 
         /* Modal phóng to ảnh */
@@ -473,7 +492,7 @@
                     </div>
                 </div>
 
-                <!-- Chỉ giữ lại phần chọn tệp tải lên -->
+                <!-- Phần chọn tệp và nút nộp bài làm thêm -->
                 <div class="storytelling-controls">
                     <p style="margin-top:0; font-weight: bold; color: #d81b60; font-size: 0.9em;">📁 TẢI LÊN TỆP ÂM THANH (MP3, WAV, M4A)</p>
                     
@@ -483,7 +502,11 @@
                     </div>
 
                     <p id="recordStatus" style="margin-top: 8px; font-style: italic; color: #555; font-size: 0.9em;"></p>
-                    <audio id="audioPlayback" controls style="display:none;"></audio>
+                    <audio id="audioPlayback" controls></audio>
+                    
+                    <!-- Nút nộp bài làm thêm mới thêm vào -->
+                    <button id="homeworkSubmitBtn" class="homework-submit-btn" onclick="submitHomework()">NỘP BÀI KỂ CHUYỆN</button>
+                    <div id="homeworkResult" class="result-panel"></div>
                 </div>
             </div>
         </div>
@@ -496,16 +519,24 @@
         <img id="modalImg">
     </div>
 
-    <!-- SCRIPT XỬ LÝ CHẤM ĐIỂM VÀ TẢI FILE -->
+    <!-- SCRIPT XỬ LÝ CHẤM ĐIỂM, NỘP LẠI VÀ NỘP BÀI LÀM THÊM -->
     <script>
-        let isSubmitted = false;
+        let baseScore = 0;
+        let homeworkFlowers = 0;
+
+        function updateProgressBoard() {
+            let totalFlowers = (baseScore >= 8 ? 2 : 0) + homeworkFlowers;
+            document.getElementById("scoreDisplay").innerText = baseScore;
+            document.getElementById("flowerDisplay").innerText = totalFlowers;
+            
+            let statusEl = document.getElementById("statusDisplay");
+            if (baseScore > 0 || homeworkFlowers > 0) {
+                statusEl.innerText = "Đã hoàn thành một phần / Hoàn tất";
+                statusEl.style.color = "#2e7d32";
+            }
+        }
 
         function submitQuiz() {
-            if (isSubmitted) {
-                alert("Bạn đã nộp bài này rồi, không thể tính điểm dồn nhiều lần!");
-                return;
-            }
-
             const q1 = document.querySelector('input[name="q1"]:checked');
             const q2 = document.querySelectorAll('input[name="q2"]:checked');
             const q3 = document.querySelector('input[name="q3"]:checked');
@@ -534,13 +565,8 @@
 
             let incorrectCount = 5 - correctCount;
 
-            isSubmitted = true;
-            
-            document.getElementById("scoreDisplay").innerText = score;
-            document.getElementById("flowerDisplay").innerText = score >= 8 ? "2" : "0";
-            let statusEl = document.getElementById("statusDisplay");
-            statusEl.innerText = "Đã hoàn thành";
-            statusEl.style.color = "#2e7d32";
+            baseScore = score;
+            updateProgressBoard();
 
             const resultPanel = document.getElementById("quizResult");
             resultPanel.style.display = "block";
@@ -548,15 +574,15 @@
             if (score === 10) {
                 resultPanel.style.backgroundColor = "#e8f5e9";
                 resultPanel.style.color = "#2e7d32";
-                resultPanel.innerHTML = `🎉 TUYỆT VỜI! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Bạn nhận được 2 bông hoa 🌸 hoàn thành xuất sắc bài học!`;
+                resultPanel.innerHTML = `🎉 TUYỆT VỜI! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Bạn có thể sửa đáp án và nộp lại bất cứ lúc nào!`;
             } else if (score >= 6) {
                 resultPanel.style.backgroundColor = "#fff9c4";
                 resultPanel.style.color = "#f57f17";
-                resultPanel.innerHTML = `👍 KHÁ LẮM! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Hãy xem lại các câu chưa chính xác nhé!`;
+                resultPanel.innerHTML = `👍 KHÁ LẮM! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Hãy xem lại các câu chưa chính xác và nộp lại nhé!`;
             } else {
                 resultPanel.style.backgroundColor = "#ffebee";
                 resultPanel.style.color = "#c62828";
-                resultPanel.innerHTML = `💪 CỐ GẮNG LÊN! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Hãy đọc lại bài đọc kỹ hơn nhé!`;
+                resultPanel.innerHTML = `💪 CỐ GẮNG LÊN! Bạn đạt ${score}/10 điểm (${correctCount} câu đúng, ${incorrectCount} câu sai). Hãy đọc lại bài và nộp lại nhé!`;
             }
 
             resultPanel.scrollIntoView({ behavior: 'smooth' });
@@ -567,14 +593,29 @@
             const file = event.target.files[0];
             const recordStatus = document.getElementById("recordStatus");
             const audioPlayback = document.getElementById("audioPlayback");
+            const homeworkSubmitBtn = document.getElementById("homeworkSubmitBtn");
 
             if (file) {
                 const fileUrl = URL.createObjectURL(file);
                 audioPlayback.src = fileUrl;
                 audioPlayback.style.display = "inline-block";
                 recordStatus.style.color = "#2e7d32";
-                recordStatus.innerText = `Đã tải tệp: "${file.name}" (+2 🌸)`;
+                recordStatus.innerText = `Đã chọn tệp: "${file.name}". Bấm nút Nộp bài bên dưới để hoàn tất!`;
+                homeworkSubmitBtn.style.display = "block";
             }
+        }
+
+        // Xử lý nút Nộp bài kể chuyện
+        function submitHomework() {
+            homeworkFlowers = 2;
+            updateProgressBoard();
+
+            const hwResult = document.getElementById("homeworkResult");
+            hwResult.style.display = "block";
+            hwResult.style.backgroundColor = "#e8f5e9";
+            hwResult.style.color = "#2e7d32";
+            hwResult.innerHTML = "🌸 Chúc mừng bạn đã được thêm 2 hoa!";
+            hwResult.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Xử lý phóng to ảnh
